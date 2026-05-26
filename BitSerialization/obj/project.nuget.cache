@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "xjuEzNXFPic=",
+  "success": true,
+  "projectFilePath": "/home/txrbo/RiderProjects/BitSerializer/BitSerialization/BitSerialization.csproj",
+  "expectedPackageFiles": [
+    "/home/txrbo/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}
