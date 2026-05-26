@@ -107,7 +107,7 @@ await BitSerializer.SerializeToStreamAsync(player, stream, leaveOpen: true);
 └─────────────────────────────┘
 ```
 
-- **Magic number**: `0x10 0x20 0x30` — identifies a valid BitSerializer payload
+- **Magic number**: `0x10 0x20 0x30`: identifies a valid BitSerializer payload
 - **Field count**: 32-bit signed integer
 - **NameHash**: SHA-256 hash of the field name (used to match fields during deserialization)
 - **FieldType**: A single byte identifying the data type (see `FieldType` enum)
