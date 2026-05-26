@@ -4,11 +4,11 @@ A lightweight, binary serializer for .NET that converts objects to and from a co
 
 ## Features
 
-- **Binary format** — compact serialization with a magic number header and SHA256 field-name verification
-- **Type-safe** — generic `Serialize<T>` / `Deserialize<T>` API with compile-time type safety
-- **Flexible** — supports `Stream` and `byte[]` I/O, sync and async
-- **Order control** — use `[Order(n)]` to control field serialization order
-- **Self-contained** — no dependencies beyond .NET 8+
+- **Binary format**: compact serialization with a magic number header and SHA256 field-name verification
+- **Type-safe**: generic `Serialize<T>` / `Deserialize<T>` API with compile-time type safety
+- **Flexible**: supports `Stream` and `byte[]` I/O, sync and async
+- **Order control**: use `[Order(n)]` to control field serialization order
+- **Self-contained**: no dependencies beyond .NET 8+
 
 ## Supported types
 
