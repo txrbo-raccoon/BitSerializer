@@ -8,6 +8,8 @@ A lightweight, binary serializer for .NET that converts objects to and from a co
 - **Type-safe**: generic `Serialize<T>` / `Deserialize<T>` API with compile-time type safety
 - **Flexible**: supports `Stream` and `byte[]` I/O, sync and async
 - **Order control**: use `[Order(n)]` to control field serialization order
+- **Compression**: transparent Deflate compression via `SerializerConfig`
+- **Encryption**: XOR or AES-256 encryption via `SerializerConfig`
 - **Self-contained**: no dependencies beyond .NET 8+
 
 ## Supported types
@@ -33,9 +35,10 @@ A lightweight, binary serializer for .NET that converts objects to and from a co
 | `TimeSpan` | `TimeSpan` |
 | `Guid` | `Guid` |
 | `IntPtr` | `nint` / `nuint` |
-| `Enum` | Any enum |
+| `Enum` | Any enum (serialized as `Int32`) |
+| `Array` | `T[]` (primitive and string arrays) |
 
-> **Note:** `Object` and `Array` types are not yet supported for serialization.
+> **Note:** `Object` and nested `Array` types are not yet supported.
 
 ## Usage
 
@@ -78,9 +81,9 @@ var fromStream = BitSerializer.Deserialize<Player>(stream);
 
 ```csharp
 byte[] data = BitSerializer.Serialize(player);
-File.WriteAllBytes("save.bin", data);
+File.WriteAllBytes("save.sobj", data);
 
-var loaded = BitSerializer.Deserialize<Player>(File.ReadAllBytes("save.bin"));
+var loaded = BitSerializer.Deserialize<Player>(File.ReadAllBytes("save.sobj"));
 ```
 
 ### Async stream serialization
@@ -89,7 +92,40 @@ var loaded = BitSerializer.Deserialize<Player>(File.ReadAllBytes("save.bin"));
 await BitSerializer.SerializeToStreamAsync(player, stream, leaveOpen: true);
 ```
 
+### Compression & encryption
+
+Configure compression and/or encryption globally via `BitSerializer.Config`:
+
+```csharp
+// Enable Deflate compression
+BitSerializer.Config = new SerializerConfig(compress: true);
+
+// Enable AES-256 encryption with a password
+BitSerializer.Config = new SerializerConfig(
+    encrypt: true,
+    encAlg: EncryptionAlgorithm.Aes256,
+    encPassword: "my-very-secure-and-secret-key"
+);
+
+// Both
+BitSerializer.Config = new SerializerConfig(
+    compress: true,
+    encrypt: true,
+    compLevel: CompressionLevel.Optimal,
+    encAlg: EncryptionAlgorithm.Aes256,
+    encPassword: "my-very-secure-and-secret-key"
+);
+
+// Serialize/Deserialize transparently applies the config
+byte[] data = BitSerializer.Serialize(player);
+var restored = BitSerializer.Deserialize<Player>(data);
+```
+
+Processing order: **compress >> encrypt**. Revert order: **decrypt >> decompress**.
+
 ## Binary format
+
+### Raw format (no compression / encryption)
 
 ```
 ┌─────────────────────────────┐
@@ -113,6 +149,21 @@ await BitSerializer.SerializeToStreamAsync(player, stream, leaveOpen: true);
 - **FieldType**: A single byte identifying the data type (see `FieldType` enum)
 - **Value**: Serialized according to its `FieldType`
 
+### Processed format (with compression / encryption)
+
+When compression or encryption is enabled, the output is wrapped:
+
+```
+┌─────────────────────────────────┐
+│ Config flags    (1 byte)        │  bit 0 = compressed
+│                                 │  bit 1 = encrypted
+├─────────────────────────────────┤
+│ Processed payload  (variable)   │  compressed and/or encrypted raw data
+└─────────────────────────────────┘
+```
+
+Processing order: **compress → encrypt**. Deserialization reverses: **decrypt → decompress**.
+
 ### Value encoding
 
 | Type | Encoding |
@@ -124,7 +175,20 @@ await BitSerializer.SerializeToStreamAsync(player, stream, leaveOpen: true);
 | `byte[]` | 4-byte length prefix + raw bytes |
 | `DateTime` | 8 bytes (`Ticks`, little-endian) |
 | `Guid` | 16 bytes |
+| `T[]` | Element `FieldType` (byte) + 4-byte length + elements |
 | *(others)* | Standard `BinaryWriter` / `BinaryReader` encoding |
+
+## SerializerConfig
+
+`BitSerializer.Config` is a static property that controls compression and encryption behavior.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `CompressResult` | `bool` | `false` | Enable Deflate compression |
+| `CompressionLevel` | `CompressionLevel` | `SmallestSize` | Compression level |
+| `EncryptResult` | `bool` | `false` | Enable encryption |
+| `EncryptionAlgorithm` | `EncryptionAlgorithm` | `Aes256` | `XorCypher` or `Aes256` |
+| `EncryptionPassword` | `string?` | `""` | Password for encryption |
 
 ## Order attribute
 

@@ -9,3 +9,4 @@
 /home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/refint/BitSerialization.dll
 /home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.pdb
 /home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/ref/BitSerialization.dll
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.sourcelink.json

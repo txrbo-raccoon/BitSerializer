@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute(("A lightweight, binary serializer for .NET that converts objects to and from a com" +
     "pact binary format."))]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.1+671409ddb3e99ff5a51e6873aecc99bb1c30a951")]
 [assembly: System.Reflection.AssemblyProductAttribute("BitSerialization")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BitSerialization")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

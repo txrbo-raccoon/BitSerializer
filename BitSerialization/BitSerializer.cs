@@ -7,6 +7,8 @@ public static class BitSerializer
 {
     private static readonly byte[] _MagicNumber = [0x10, 0x20, 0x30];
 
+    public static SerializerConfig Config { get; set; } = new();
+
     private static void _writeValue(BinaryWriter bw, FieldType fieldType, object value)
     {
         switch (fieldType)
@@ -145,7 +147,8 @@ public static class BitSerializer
             throw new ArgumentNullException(nameof(obj));
 
         var extractedFields = FieldExtractor.ExtractFields(typeof(T), obj);
-        return _serialize2Bytes(extractedFields);
+        var raw = _serialize2Bytes(extractedFields);
+        return Config.ProcessBytes(raw);
     }
 
     /// <summary>Serializes an object and writes the result into a stream.</summary>
@@ -189,10 +192,16 @@ public static class BitSerializer
     /// <typeparam name="T">The type of the object to reconstruct.</typeparam>
     /// <returns>The deserialized object.</returns>
     /// <exception cref="InvalidDataException">Thrown if the data is corrupt or the magic number is invalid.</exception>
+    /// <summary>Deserializes a byte array back into an object.</summary>
+    /// <param name="bytes">The byte array produced by <see cref="Serialize{T}"/>.</param>
+    /// <typeparam name="T">The type of the object to reconstruct.</typeparam>
+    /// <returns>The deserialized object.</returns>
+    /// <exception cref="InvalidDataException">Thrown if the data is corrupt or the magic number is invalid.</exception>
     public static T Deserialize<T>(byte[] bytes) where T : new()
     {
+        bytes = Config.RevertBytes(bytes);
         using var ms = new MemoryStream(bytes);
-        return Deserialize<T>(ms);
+        return _deserialize<T>(ms);
     }
 
     /// <summary>Deserializes data from a stream back into an object.</summary>
@@ -201,6 +210,13 @@ public static class BitSerializer
     /// <returns>The deserialized object.</returns>
     /// <exception cref="InvalidDataException">Thrown if the data is corrupt or the magic number is invalid.</exception>
     public static T Deserialize<T>(Stream stream) where T : new()
+    {
+        using var ms = new MemoryStream();
+        stream.CopyTo(ms);
+        return Deserialize<T>(ms.ToArray());
+    }
+
+    private static T _deserialize<T>(Stream stream) where T : new()
     {
         using var br = new BinaryReader(stream);
 

@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/txrbo-raccoon/BitSerializer</projectUrl>
     <description>A lightweight, binary serializer for .NET that converts objects to and from a compact binary format.</description>
     <tags>Serialization</tags>
-    <repository type="GitHub" url="https://github.com/txrbo-raccoon/BitSerializer" />
+    <repository type="GitHub" url="https://github.com/txrbo-raccoon/BitSerializer" commit="671409ddb3e99ff5a51e6873aecc99bb1c30a951" />
     <dependencies>
       <group targetFramework="net8.0" />
     </dependencies>
