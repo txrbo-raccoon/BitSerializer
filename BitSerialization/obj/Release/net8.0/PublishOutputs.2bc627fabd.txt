@@ -1,0 +1,3 @@
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/publish/BitSerialization.dll
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/publish/BitSerialization.deps.json
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/publish/BitSerialization.pdb

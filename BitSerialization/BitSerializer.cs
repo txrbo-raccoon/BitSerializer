@@ -33,10 +33,46 @@ public static class BitSerializer
             case FieldType.DateTime: bw.Write(((DateTime)value).Ticks); break;
             case FieldType.TimeSpan: bw.Write(((TimeSpan)value).Ticks); break;
             case FieldType.Guid: bw.Write(((Guid)value).ToByteArray()); break;
-            case FieldType.IntPtr: bw.Write(((IConvertible)value).ToInt64(null)); break;
+            case FieldType.IntPtr: bw.Write(value is nint ni ? (long)ni : (long)(nuint)value); break;
             case FieldType.Enum: bw.Write(Convert.ToInt32(value)); break;
+            case FieldType.Array:
+                var arr = (Array)value;
+                var elemType = arr.GetType().GetElementType()!;
+                var elemFieldType = FieldTypeMapper.MapFromSystemType(elemType);
+                bw.Write((byte)elemFieldType);
+                bw.Write(arr.Length);
+                for (int i = 0; i < arr.Length; i++)
+                    _writeValue(bw, elemFieldType, arr.GetValue(i)!);
+                break;
             default: throw new NotSupportedException($"Serialization of FieldType '{fieldType}' is not supported");
         }
+    }
+
+    private static Type _resolveTypeFromFieldType(FieldType fieldType)
+    {
+        return fieldType switch
+        {
+            FieldType.Bool => typeof(bool),
+            FieldType.Byte => typeof(byte),
+            FieldType.SByte => typeof(sbyte),
+            FieldType.Char => typeof(char),
+            FieldType.Int16 => typeof(short),
+            FieldType.UInt16 => typeof(ushort),
+            FieldType.Int32 => typeof(int),
+            FieldType.UInt32 => typeof(uint),
+            FieldType.Int64 => typeof(long),
+            FieldType.UInt64 => typeof(ulong),
+            FieldType.Single => typeof(float),
+            FieldType.Double => typeof(double),
+            FieldType.Decimal => typeof(decimal),
+            FieldType.String => typeof(string),
+            FieldType.ByteArray => typeof(byte[]),
+            FieldType.DateTime => typeof(DateTime),
+            FieldType.TimeSpan => typeof(TimeSpan),
+            FieldType.Guid => typeof(Guid),
+            FieldType.IntPtr => typeof(IntPtr),
+            _ => throw new NotSupportedException($"Cannot resolve System.Type from FieldType '{fieldType}'")
+        };
     }
 
     private static object? _readValue(BinaryReader br, FieldType fieldType)
@@ -63,8 +99,20 @@ public static class BitSerializer
             FieldType.Guid => new Guid(br.ReadBytes(16)),
             FieldType.IntPtr => new nint(br.ReadInt64()),
             FieldType.Enum => br.ReadInt32(),
+            FieldType.Array => _readArray(br),
             _ => throw new NotSupportedException($"Deserialization of FieldType '{fieldType}' is not supported")
         };
+    }
+
+    private static Array _readArray(BinaryReader br)
+    {
+        var elemFieldType = (FieldType)br.ReadByte();
+        var length = br.ReadInt32();
+        var elemType = _resolveTypeFromFieldType(elemFieldType);
+        var array = Array.CreateInstance(elemType, length);
+        for (int i = 0; i < length; i++)
+            array.SetValue(_readValue(br, elemFieldType), i);
+        return array;
     }
 
     private static byte[] _serialize2Bytes(ICollection<ClassField> fields)

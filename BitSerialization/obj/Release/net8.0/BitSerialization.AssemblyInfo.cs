@@ -11,7 +11,7 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("txrbo_raccoon")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute(("A lightweight, binary serializer for .NET that converts objects to and from a com" +
     "pact binary format."))]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

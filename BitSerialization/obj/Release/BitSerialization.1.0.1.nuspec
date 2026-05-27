@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>BitSerialization</id>
+    <version>1.0.1</version>
+    <title>BitSerialization</title>
+    <authors>txrbo.raccoon</authors>
+    <licenseUrl>https://github.com/txrbo-raccoon/BitSerializer</licenseUrl>
+    <icon>icon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/txrbo-raccoon/BitSerializer</projectUrl>
+    <description>A lightweight, binary serializer for .NET that converts objects to and from a compact binary format.</description>
+    <tags>Serialization</tags>
+    <repository type="GitHub" url="https://github.com/txrbo-raccoon/BitSerializer" />
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/BitSerialization.dll" target="lib/net8.0/BitSerialization.dll" />
+    <file src="/home/txrbo/RiderProjects/BitSerializer/BitSerialization/icon.png" target="/icon.png" />
+    <file src="/home/txrbo/RiderProjects/BitSerializer/README.md" target="/README.md" />
+  </files>
+</package>

@@ -1,0 +1,11 @@
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/BitSerialization.deps.json
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/BitSerialization.dll
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/bin/Release/net8.0/BitSerialization.pdb
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.GeneratedMSBuildEditorConfig.editorconfig
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.AssemblyInfoInputs.cache
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.AssemblyInfo.cs
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.csproj.CoreCompileInputs.cache
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.dll
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/refint/BitSerialization.dll
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/BitSerialization.pdb
+/home/txrbo/RiderProjects/BitSerializer/BitSerialization/obj/Release/net8.0/ref/BitSerialization.dll
